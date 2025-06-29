@@ -1,0 +1,2632 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Analytics Platform</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #6b7280;
+            --accent-color: #3b82f6;
+            --success-color: #16a34a;
+            --warning-color: #f59e0b;
+            --danger-color: #dc2626;
+            --dark-color: #111827;
+            --light-color: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--light-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .main-container {
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--dark-color);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            border: none;
+            margin-bottom: 2.5rem;
+            gap: 1rem;
+        }
+
+        .nav-tabs .nav-link {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            color: var(--text-secondary);
+            background: white;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .nav-tabs .nav-link.active {
+            color: white;
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Card styles for main containers */
+        .card-style {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 2rem;
+        }
+
+        /* Upload Section */
+        .upload-section {
+            text-align: center;
+            border: 2px dashed var(--border-color);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-section:hover,
+        .upload-section.dragover {
+            border-color: var(--primary-color);
+            background-color: var(--light-color);
+        }
+
+        .upload-section.dragover {
+            transform: scale(1.01);
+            box-shadow: var(--shadow-md);
+        }
+
+        .upload-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-section h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-section p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            border: 1px solid transparent;
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+            border-color: #4338ca;
+            color: white;
+        }
+
+        .btn-outline-primary {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-outline-danger {
+            border-color: var(--danger-color);
+            color: var(--danger-color);
+        }
+
+        .btn-outline-danger:hover {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        /* Forms */
+        .form-control,
+        .form-select {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            background-color: #f9fafb;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgb(79 70 229 / 10%);
+            background-color: white;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        /* S3 Form */
+        .s3-form h4 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Loading Spinner */
+        .loading-spinner {
+            display: none;
+            text-align: center;
+        }
+
+        .spinner-border {
+            color: var(--primary-color);
+            width: 3rem;
+            height: 3rem;
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 8px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 500;
+            border-left-width: 4px;
+            border-left-style: solid;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #15803d;
+            border-color: var(--success-color);
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            color: #b91c1c;
+            border-color: var(--danger-color);
+        }
+
+        .alert-warning {
+            background: #fffbeb;
+            color: #b45309;
+            border-color: var(--warning-color);
+        }
+
+        .alert-info {
+            background: #eff6ff;
+            color: #1d4ed8;
+            border-color: var(--accent-color);
+        }
+
+        /* Visualizations */
+        .visualization-container {
+            margin-bottom: 2.5rem;
+        }
+
+        /* Clean, professional container */
+        .container-fluid {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .chart-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table {
+            font-size: 0.9rem;
+        }
+
+        .table th {
+            background: #f9fafb;
+            border-color: var(--border-color);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 12px 16px;
+            text-align: left;
+            vertical-align: middle;
+            white-space: nowrap;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .table td {
+            border-color: var(--border-color);
+            padding: 12px 16px;
+            text-align: left;
+            vertical-align: top;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: var(--text-primary);
+        }
+
+        .table tbody tr:hover,
+        .column-details-table tbody tr:hover,
+        .column-types-table tbody tr:hover {
+            background-color: var(--light-color);
+        }
+
+        /* Data type specific formatting */
+        .table td.email {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--accent-color);
+        }
+
+        .table td.ssn {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--secondary-color);
+        }
+
+        .table td.date {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .table td.name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Better spacing for table container */
+        .table-responsive {
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Flexible table layout */
+        .table {
+            table-layout: auto;
+            width: 100%;
+        }
+
+        .table th {
+            white-space: nowrap;
+            min-width: 120px;
+        }
+
+        /* Ensure table takes full width */
+        .table {
+            margin-bottom: 0;
+            width: 100%;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>td {
+            background: #fdfdfe;
+        }
+
+        /* Dataset Information */
+        .dataset-info {
+            padding: 0;
+            border: none;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .stat-item {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            color: var(--dark-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .dataset-info h4 {
+            color: var(--dark-color);
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .info-item.full-width {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .column-types-table {
+            margin-top: 0.75rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .column-types-table th {
+            background: #f9fafb;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .column-types-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            vertical-align: middle;
+            word-break: break-word;
+        }
+
+        .data-type-badge {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+        }
+
+        /* Comprehensive Statistics Styles */
+        .stats-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .stats-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .column-details-table {
+            margin-top: 1rem;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            overflow-y: auto;
+            overflow-x: auto;
+            max-height: 700px;
+            box-shadow: none;
+        }
+
+        .column-details-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .column-details-table th,
+        .column-details-table td {
+            white-space: nowrap;
+        }
+
+        .column-details-table th:nth-child(1),
+        .column-details-table td:nth-child(1) {
+            min-width: 200px;
+        }
+
+        .column-details-table th:nth-child(2),
+        .column-details-table td:nth-child(2) {
+            min-width: 150px;
+        }
+
+        .column-details-table th:nth-child(3),
+        .column-details-table td:nth-child(3) {
+            min-width: 150px;
+        }
+
+        .column-details-table th:nth-child(4),
+        .column-details-table td:nth-child(4) {
+            min-width: 150px;
+        }
+
+        .column-details-table th:nth-child(5),
+        .column-details-table td:nth-child(5) {
+            min-width: 300px;
+        }
+
+        .column-details-table th {
+            background: #f9fafb;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 2px solid var(--border-color);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+        }
+
+        .column-details-table td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            vertical-align: top;
+            word-wrap: break-word;
+        }
+
+        .stats-cell {
+            font-size: 0.8rem;
+        }
+
+        .numeric-stats,
+        .categorical-stats {
+            line-height: 1.5;
+        }
+
+        .numeric-stats div,
+        .categorical-stats div {
+            margin-bottom: 0.3rem;
+            color: var(--text-secondary);
+        }
+
+        .numeric-stats strong,
+        .categorical-stats strong {
+            color: var(--text-primary);
+            font-weight: 600;
+            min-width: 60px;
+            display: inline-block;
+        }
+
+        .categorical-stats strong {
+            min-width: 80px;
+        }
+
+        .top-value {
+            background: var(--light-color);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin: 0.125rem 0;
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            display: inline-block;
+        }
+
+        /* Enhanced dataset stats grid */
+        .dataset-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .dataset-stats {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 1rem;
+            }
+
+            .column-details-table {
+                overflow-x: auto;
+            }
+
+            .stats-cell {
+                max-width: 200px;
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Data Preview Styles */
+        .data-preview-container {
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
+            border: none;
+            overflow: visible;
+        }
+
+        /* Sortable column headers */
+        .sortable-header {
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            padding-right: 25px !important;
+        }
+
+        .sortable-header:hover {
+            background-color: #f3f4f6 !important;
+        }
+
+        .sort-indicator {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            color: #64748b;
+            width: 12px;
+            text-align: center;
+        }
+
+        .sort-indicator.asc::after {
+            content: "▲";
+            color: var(--primary-color);
+        }
+
+        .sort-indicator.desc::after {
+            content: "▼";
+            color: var(--primary-color);
+        }
+
+        .sort-indicator.none::after {
+            content: "⇅";
+            color: #cbd5e1;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            overflow-y: auto;
+            max-height: 850px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: none;
+        }
+
+        .preview-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .rows-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rows-selector label {
+            font-weight: 500;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .rows-selector select {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .search-filter {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-filter label {
+            font-weight: 500;
+            margin: 0;
+            color: var(--text-primary);
+        }
+
+        .search-filter input {
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: white;
+            font-size: 0.9rem;
+        }
+
+        .search-filter input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+        }
+
+        .column-search-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .column-filter-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .data-preview-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-preview-table th {
+            background: #f9fafb;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.875rem;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-preview-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            vertical-align: top;
+            white-space: nowrap;
+        }
+
+        .pagination-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pagination-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .pagination-controls {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .pagination-btn {
+            padding: 0.375rem 0.875rem;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .page-input {
+            width: 60px;
+            padding: 0.375rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        /* Upload Options */
+        .upload-options {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .rows-limit-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .rows-limit-selector label {
+            font-weight: 500;
+            color: var(--text-primary);
+            margin: 0;
+            font-size: 0.9rem;
+        }
+
+        .rows-limit-selector select {
+            width: 200px;
+            padding: 0.375rem 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            background: white;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .rows-limit-selector select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Clear Button Container */
+        #clearDataContainer {
+            margin: 2rem 0;
+        }
+
+        /* AWS Status Indicator - Floating Bottom Right */
+        .aws-status-floating {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+
+        .aws-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 25px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(10px);
+            cursor: pointer;
+        }
+
+        .aws-status-indicator:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .aws-status-indicator.connected {
+            background-color: #dcfce7;
+            color: #16a34a;
+            border-color: #bbf7d0;
+        }
+
+        .aws-status-indicator.disconnected {
+            background-color: #fef2f2;
+            color: #dc2626;
+            border-color: #fecaca;
+        }
+
+        .aws-status-indicator.checking {
+            background-color: #fef3c7;
+            color: #d97706;
+            border-color: #fed7aa;
+        }
+
+        .aws-status-indicator.limited {
+            background-color: #dbeafe;
+            color: #2563eb;
+            border-color: #bfdbfe;
+        }
+
+        #awsStatusIcon {
+            font-size: 1rem;
+        }
+
+        .aws-status-indicator.connected #awsStatusIcon {
+            color: #16a34a;
+        }
+
+        .aws-status-indicator.disconnected #awsStatusIcon {
+            color: #dc2626;
+        }
+
+        .aws-status-indicator.checking #awsStatusIcon {
+            color: #d97706;
+            animation: pulse 2s infinite;
+        }
+
+        .aws-status-indicator.limited #awsStatusIcon {
+            color: #2563eb;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* System Monitoring - Top Right */
+        .system-monitor-fixed {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            z-index: 1000;
+            pointer-events: auto;
+        }
+
+        /* Make main container relative for absolute positioning */
+        .main-container {
+            position: relative;
+        }
+
+        .system-monitor {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 0.875rem;
+            font-weight: 600;
+            min-width: 200px;
+            transition: all 0.3s ease;
+        }
+
+        .system-monitor:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .system-monitor-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+            font-weight: 700;
+        }
+
+        .system-monitor-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.8rem;
+        }
+
+        .system-monitor-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .system-monitor-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .system-monitor-value {
+            font-weight: 700;
+            font-family: 'Monaco', 'Consolas', monospace;
+        }
+
+        .system-monitor-progress {
+            width: 100%;
+            height: 4px;
+            background: var(--border-color);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-top: 0.25rem;
+        }
+
+        .system-monitor-progress-bar {
+            height: 100%;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .system-monitor-progress-bar.ram {
+            background: linear-gradient(90deg, var(--success-color) 0%, var(--warning-color) 70%, var(--danger-color) 100%);
+        }
+
+        .system-monitor-progress-bar.cpu {
+            background: linear-gradient(90deg, var(--accent-color) 0%, var(--primary-color) 70%, var(--danger-color) 100%);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container-fluid {
+                padding: 0 1rem;
+            }
+
+            .header {
+                padding: 2rem 0;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .card-style {
+                padding: 1.5rem;
+            }
+
+            .chart-title {
+                font-size: 1.25rem;
+            }
+        }
+
+        /* Animation */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Custom Scrollbar Styles */
+        .table-container::-webkit-scrollbar,
+        .column-details-table::-webkit-scrollbar {
+            width: 12px;
+            height: 12px;
+        }
+
+        .table-container::-webkit-scrollbar-track,
+        .column-details-table::-webkit-scrollbar-track {
+            background-color: var(--light-color);
+        }
+
+        .table-container::-webkit-scrollbar-thumb,
+        .column-details-table::-webkit-scrollbar-thumb {
+            background-color: #d1d5db;
+            border-radius: 6px;
+        }
+
+        .table-container::-webkit-scrollbar-thumb:hover,
+        .column-details-table::-webkit-scrollbar-thumb:hover {
+            background-color: #9ca3af;
+        }
+    </style>
+    <style>
+        /* Sticky header styles for data preview */
+        .table-container {
+            overflow-y: auto;
+            max-height: 850px;
+        }
+
+        .data-preview-table th {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+        <div class="container-fluid px-4">
+            <!-- Header -->
+            <div class="header text-center">
+                <h1>Data Analytics Platform</h1>
+                <p>Professional cloud-based data visualization and analysis tool</p>
+            </div>
+
+            <!-- Navigation -->
+            <ul class="nav nav-tabs justify-content-center" id="dataSourceTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="s3-tab" data-bs-toggle="tab" data-bs-target="#s3-pane"
+                        type="button" role="tab">
+                        <i class="fab fa-aws me-2"></i>AWS S3 Bucket
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="upload-tab" data-bs-toggle="tab" data-bs-target="#upload-pane"
+                        type="button" role="tab">
+                        <i class="fas fa-upload me-2"></i>Local Files
+                    </button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="dataSourceTabContent">
+                <!-- S3 Tab -->
+                <div class="tab-pane fade show active" id="s3-pane" role="tabpanel">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="s3-form card-style">
+                                <h4><i class="fab fa-aws"></i>Cloud Storage Access</h4>
+                                <form id="s3Form">
+                                    <div class="row">
+                                        <div class="col-md-12 mb-3">
+                                            <label for="s3Url" class="form-label">S3 URL</label>
+                                            <input type="text" class="form-control" id="s3Url"
+                                                placeholder="s3://bucket/data/ or s3://bucket/year=2025/month=06/file.csv"
+                                                required>
+                                            <div class="form-text mt-2">
+                                                Enter the full S3 URL to your data folder or individual file. Supported
+                                                formats:<br>
+                                                <strong>Folders:</strong><br>
+                                                • <code>s3://bucket-name/folder/path/</code><br>
+                                                • <code>https://bucket-name.s3.amazonaws.com/folder/path/</code><br>
+                                                <strong>Individual Files:</strong><br>
+                                                • <code>s3://bucket-name/path/file.csv</code><br>
+                                                •
+                                                <code>https://bucket-name.s3.us-east-1.amazonaws.com/path/file.csv</code><br>
+                                                <strong>Partitioned Data (Hive-style):</strong><br>
+                                                • <code>s3://bucket-name/data/year=2025/month=06/day=29/</code><br>
+                                                •
+                                                <code>s3://bucket-name/data/year=2025/month=06/day=29/file.parquet</code><br>
+                                                • <code>s3://bucket/data/year%3D2025/month%3D06/day%3D29/</code>
+                                                (URL-encoded)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="fileType" class="form-label">File Type</label>
+                                            <select class="form-select" id="fileType" required>
+                                                <option value="csv">CSV</option>
+                                                <option value="parquet" selected>Parquet</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cloudSampleSize" class="form-label">Sample Size</label>
+                                            <select class="form-select" id="cloudSampleSize">
+                                                <option value="all">All data</option>
+                                                <option value="100" selected>100 rows</option>
+                                                <option value="500">500 rows</option>
+                                                <option value="1000">1,000 rows</option>
+                                                <option value="5000">5,000 rows</option>
+                                                <option value="10000">10,000 rows</option>
+                                                <option value="25000">25,000 rows</option>
+                                                <option value="50000">50,000 rows</option>
+                                                <option value="100000">100,000 rows</option>
+                                            </select>
+                                            <div class="form-text">From quick preview (100) to full dataset analysis
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center mt-2">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-download me-2"></i>Load Data
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upload Tab -->
+                <div class="tab-pane fade" id="upload-pane" role="tabpanel">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-12">
+                            <div class="upload-section text-center card-style" id="uploadArea">
+                                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                                <h4>Upload Your Data</h4>
+                                <p class="text-muted">Drag and drop your CSV file here or click to browse</p>
+
+                                <div class="upload-options mb-3" onclick="event.stopPropagation()">
+                                    <div class="rows-limit-selector">
+                                        <label for="rowsToLoad" class="form-label">Rows to load:</label>
+                                        <select id="rowsToLoad" class="form-select form-select-sm"
+                                            onclick="event.stopPropagation()">
+                                            <option value="all">All rows</option>
+                                            <option value="100">First 100 rows</option>
+                                            <option value="500">First 500 rows</option>
+                                            <option value="1000" selected>First 1,000 rows</option>
+                                            <option value="5000">First 5,000 rows</option>
+                                            <option value="10000">First 10,000 rows</option>
+                                            <option value="50000">First 50,000 rows</option>
+                                            <option value="100000">First 100,000 rows</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <input type="file" id="fileInput" class="d-none" accept=".csv,.parquet">
+                                <button type="button" class="btn btn-primary" id="chooseFileBtn">
+                                    <i class="fas fa-folder-open me-2"></i>Choose File
+                                </button>
+                                <p class="mt-3 text-muted small">Supported: CSV and Parquet files</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Loading Spinner -->
+            <div class="loading-spinner card-style" id="loadingSpinner">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Processing your data...</p>
+            </div>
+
+            <!-- Alert Container -->
+            <div id="alertContainer"></div>
+
+            <!-- Export and Clear Data Buttons -->
+            <div id="actionButtonsContainer" class="text-center" style="display: none;">
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <!-- Export Buttons -->
+                    <div id="exportButtonsContainer" style="display: none;">
+                        <button type="button" class="btn btn-outline-primary" id="exportCsvBtn">
+                            <i class="fas fa-download me-2"></i>Export as CSV
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="exportParquetBtn">
+                            <i class="fas fa-download me-2"></i>Export as Parquet
+                        </button>
+                    </div>
+
+                    <!-- Clear Button -->
+                    <button type="button" class="btn btn-outline-danger" id="clearDataBtn">
+                        <i class="fas fa-trash-alt me-2"></i>Clear Data
+                    </button>
+                </div>
+            </div>
+
+            <!-- Visualizations Container -->
+            <div id="visualizationsContainer"></div>
+        </div>
+    </div>
+
+    <!-- AWS Status Indicator - Now integrated into System Monitor -->
+    <!-- <div id="awsStatusContainer" class="aws-status-floating" style="display: none;">
+        <div id="awsStatusIndicator" class="aws-status-indicator">
+            <i class="fas fa-cloud" id="awsStatusIcon"></i>
+            <span id="awsStatusText">Checking AWS connection...</span>
+        </div>
+    </div> -->
+
+    <!-- System Monitor - Fixed Top Right -->
+    <div id="systemMonitorContainer" class="system-monitor-fixed">
+        <div class="system-monitor">
+            <div class="system-monitor-header">
+                <i class="fas fa-desktop"></i>
+                <span>System Monitor</span>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">RAM:</span>
+                <span class="system-monitor-value" id="ramUsage">--</span>
+            </div>
+            <div class="system-monitor-progress">
+                <div class="system-monitor-progress-bar ram" id="ramProgressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">Available RAM:</span>
+                <span class="system-monitor-value" id="availableRam">--</span>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">Total RAM:</span>
+                <span class="system-monitor-value" id="totalRam">--</span>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">CPU:</span>
+                <span class="system-monitor-value" id="cpuUsage">--</span>
+            </div>
+            <div class="system-monitor-progress">
+                <div class="system-monitor-progress-bar cpu" id="cpuProgressBar" style="width: 0%"></div>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">Total CPU Cores:</span>
+                <span class="system-monitor-value" id="totalCpuCores">--</span>
+            </div>
+
+            <div class="system-monitor-item">
+                <span class="system-monitor-label">AWS:</span>
+                <span class="system-monitor-value" id="awsConnectionStatus">--</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Data persistence keys
+        const STORAGE_KEY = 'dataVisualizer_data';
+        const FILENAME_KEY = 'dataVisualizer_filename';
+        const S3_FORM_KEY = 'dataVisualizer_s3Form';
+
+        // DOM elements
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+
+        // Prevent default drag behaviors globally
+        if (uploadArea) {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+            });
+        }
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            document.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        // Drag and drop visual feedback
+        if (uploadArea) {
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            // Event handlers
+            uploadArea.addEventListener('drop', handleDrop, false);
+        }
+
+        function highlight(e) {
+            if (uploadArea) uploadArea.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            if (uploadArea) uploadArea.classList.remove('dragover');
+        }
+
+        document.addEventListener('drop', function (e) {
+            if (uploadArea && !uploadArea.contains(e.target)) {
+                e.preventDefault();
+                e.stopPropagation();
+                showAlert('Drop files in upload area', 'warning');
+            }
+        }, false);
+
+        const chooseFileBtn = document.getElementById('chooseFileBtn');
+        if (chooseFileBtn) {
+            chooseFileBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (fileInput) fileInput.click();
+            });
+        }
+
+        // Prevent dropdown from triggering file upload
+        document.addEventListener('DOMContentLoaded', function () {
+            const rowsSelect = document.getElementById('rowsToLoad');
+            if (rowsSelect) {
+                rowsSelect.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                });
+                rowsSelect.addEventListener('change', function (e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+
+        if (uploadArea) {
+            uploadArea.addEventListener('click', function (e) {
+                // Don't trigger file input if clicking on dropdown or its label
+                if (e.target.closest('.upload-options') || e.target.closest('#rowsToLoad')) {
+                    return;
+                }
+
+                if (e.target === uploadArea || (e.target.closest('.upload-section') === uploadArea && e.target.id !== 'chooseFileBtn')) {
+                    if (fileInput) fileInput.click();
+                }
+            });
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
+
+        if (fileInput) {
+            fileInput.addEventListener('change', function (e) {
+                handleFiles(e.target.files);
+                e.target.value = '';
+            });
+        }
+
+        function handleFiles(files) {
+            if (files.length > 0) {
+                const file = files[0];
+
+                // Validate file type
+                const fileName = file.name.toLowerCase();
+                const isValidType = file.type === 'text/csv' ||
+                    file.type === 'application/csv' ||
+                    fileName.endsWith('.csv') ||
+                    fileName.endsWith('.parquet');
+
+                if (!isValidType) {
+                    showAlert('Invalid file type', 'danger');
+                    return;
+                }
+
+                // No file size limit - removed restriction
+
+                uploadFile(file);
+            }
+        }
+
+        function showAlert(message, type = 'danger') {
+            const alertContainer = document.getElementById('alertContainer');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            alertContainer.appendChild(alertDiv);
+
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 3000);
+        }
+
+        function showLoading(show = true) {
+            document.getElementById('loadingSpinner').style.display = show ? 'block' : 'none';
+        }
+
+        // Data persistence functions
+        function saveDataToStorage(visualizations, filename) {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(visualizations));
+                localStorage.setItem(FILENAME_KEY, filename);
+            } catch (e) {
+                console.warn('Failed to save data to localStorage:', e);
+            }
+        }
+
+        function loadDataFromStorage() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                const filename = localStorage.getItem(FILENAME_KEY);
+                if (data && filename) {
+                    return {
+                        visualizations: JSON.parse(data),
+                        filename: filename
+                    };
+                }
+            } catch (e) {
+                console.warn('Failed to load data from localStorage:', e);
+            }
+            return null;
+        }
+
+        function clearStoredData() {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(FILENAME_KEY);
+                // Don't remove S3_FORM_KEY - keep form data for user convenience
+            } catch (e) {
+                console.warn('Failed to clear localStorage:', e);
+            }
+        }
+
+        function clearAllStoredData() {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+                localStorage.removeItem(FILENAME_KEY);
+                localStorage.removeItem(S3_FORM_KEY);
+            } catch (e) {
+                console.warn('Failed to clear all localStorage:', e);
+            }
+        }
+
+        // S3 form persistence functions
+        function saveS3FormData() {
+            try {
+                const s3FormData = {
+                    s3_url: document.getElementById('s3Url').value,
+                    file_type: document.getElementById('fileType').value,
+                    sample_size: document.getElementById('cloudSampleSize').value
+                };
+                localStorage.setItem(S3_FORM_KEY, JSON.stringify(s3FormData));
+            } catch (e) {
+                console.warn('Failed to save S3 form data to localStorage:', e);
+            }
+        }
+
+        function loadS3FormData() {
+            try {
+                const data = localStorage.getItem(S3_FORM_KEY);
+                if (data) {
+                    return JSON.parse(data);
+                }
+            } catch (e) {
+                console.warn('Failed to load S3 form data from localStorage:', e);
+            }
+            return null;
+        }
+
+        function showActionButtons(show = true, showExport = false) {
+            document.getElementById('actionButtonsContainer').style.display = show ? 'block' : 'none';
+            document.getElementById('exportButtonsContainer').style.display = showExport ? 'block' : 'none';
+        }
+
+        function uploadFile(file) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Add rows limit parameter
+            const rowsToLoad = document.getElementById('rowsToLoad').value;
+            formData.append('rows_limit', rowsToLoad);
+
+            showLoading(true);
+            document.getElementById('visualizationsContainer').innerHTML = '';
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showLoading(false);
+                    if (data.success) {
+                        const timeMessage = data.processing_time ?
+                            `File processed in ${data.processing_time}s` :
+                            'File processed successfully';
+                        showAlert(timeMessage, 'success');
+                        saveDataToStorage(data.visualizations, data.filename);
+                        displayVisualizations(data.visualizations);
+                        showActionButtons(true, data.export_available || false);
+                    } else {
+                        showAlert(data.error || 'Processing failed');
+                    }
+                })
+                .catch(error => {
+                    showLoading(false);
+                    showAlert('Network error occurred');
+                });
+        }
+
+        // S3 Form submission
+        document.getElementById('s3Form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                s3_url: document.getElementById('s3Url').value,
+                file_type: document.getElementById('fileType').value,
+                sample_size: document.getElementById('cloudSampleSize').value
+            };
+
+            // Save form data for persistence
+            saveS3FormData();
+
+            showLoading(true);
+            document.getElementById('visualizationsContainer').innerHTML = '';
+
+            fetch('/s3-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    showLoading(false);
+                    if (data.success) {
+                        const timeMessage = data.processing_time ?
+                            `S3 data loaded in ${data.processing_time}s` :
+                            'S3 data loaded successfully';
+                        showAlert(timeMessage, 'success');
+                        saveDataToStorage(data.visualizations, data.filename);
+                        displayVisualizations(data.visualizations);
+                        showActionButtons(true, data.export_available || false);
+
+                        // Store S3 parameters for export
+                        if (data.export_available) {
+                            window.currentS3Data = {
+                                s3_url: document.getElementById('s3Url').value,
+                                file_type: document.getElementById('fileType').value,
+                                sample_size: document.getElementById('cloudSampleSize').value
+                            };
+                            // Also save to localStorage for persistence
+                            saveS3FormData();
+                        }
+                    } else {
+                        showAlert(data.error || 'S3 loading failed');
+                    }
+                })
+                .catch(error => {
+                    showLoading(false);
+                    showAlert('Network error occurred');
+                });
+        });
+
+        function clearVisualizations() {
+            document.getElementById('visualizationsContainer').innerHTML = '';
+            showActionButtons(false);
+            clearStoredData();
+            // Clear S3 data
+            window.currentS3Data = null;
+        }
+
+        function displayVisualizations(visualizations) {
+            const container = document.getElementById('visualizationsContainer');
+
+            visualizations.forEach((viz, index) => {
+                const vizDiv = document.createElement('div');
+                vizDiv.className = 'visualization-container fade-in';
+
+                if (viz.type === 'data_preview') {
+                    const rowsLoadedInfo = viz.data.rows_loaded_info ?
+                        `<div class="alert alert-info mb-4" style="font-size: 0.9rem; padding: 0.75rem 1.25rem;">
+                            <i class="fas fa-info-circle me-2"></i>${viz.data.rows_loaded_info}
+                        </div>` : '';
+
+                    vizDiv.innerHTML = `
+                        <div class="card-style">
+                            <h3 class="chart-title">${viz.title}</h3>
+                            <div class="data-preview-container">
+                                ${rowsLoadedInfo}
+                                <div class="preview-controls">
+                                    <div class="rows-selector">
+                                        <label for="rowsPerPage">Rows per page:</label>
+                                        <select id="rowsPerPage" onchange="updateDataPreview()">
+                                            <option value="10">10</option>
+                                            <option value="25" selected>25</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                    </div>
+                                    <div class="search-filter">
+                                        <label for="dataSearch">Search:</label>
+                                        <input type="text" id="dataSearch" class="form-control" 
+                                               placeholder="Search across all columns..." 
+                                               oninput="filterData()" style="width: 250px;">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                onclick="clearSearch()" id="clearSearchBtn" style="display: none;">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="pagination-info" id="paginationInfo"></div>
+                                </div>
+                                <div class="table-container">
+                                    <table class="data-preview-table" id="dataPreviewTable">
+                                        <thead id="tableHead"></thead>
+                                        <tbody id="tableBody"></tbody>
+                                    </table>
+                                </div>
+                                <div class="pagination-container" id="paginationContainer"></div>
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(vizDiv);
+
+                    // Store data globally for pagination and sorting
+                    window.previewData = viz.data;
+                    window.originalData = [...viz.data.data]; // Keep original order
+                    window.filteredData = [...viz.data.data]; // Keep filtered data separate
+                    window.currentPage = 1;
+                    window.sortState = { column: null, direction: 'none' }; // none, asc, desc
+                    window.searchTerm = '';
+
+                    // Initialize data preview
+                    updateDataPreview();
+                    return;
+                } else if (viz.type === 'info') {
+                    // Create comprehensive dataset statistics display
+                    const data = viz.data;
+                    window.columnDetailsData = Object.entries(data.column_info);
+                    window.originalColumnDetailsData = [...window.columnDetailsData];
+                    window.filteredColumnDetailsData = [...window.columnDetailsData];
+                    window.columnDetailsSortState = {
+                        column: null,
+                        direction: 'none'
+                    };
+                    window.columnSearchTerm = '';
+
+                    // Basic dataset overview
+                    const overviewHtml = `
+                        <div class="stats-section">
+                            <h4>Dataset Overview</h4>
+                            <div class="dataset-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Rows</span>
+                                    <span class="stat-value">${data.shape[0].toLocaleString()}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Columns</span>
+                                    <span class="stat-value">${data.shape[1]}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Memory Usage</span>
+                                    <span class="stat-value">${data.memory_usage_mb} MB</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Completeness</span>
+                                    <span class="stat-value">${data.completeness_score}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Data quality metrics
+                    const qualityHtml = `
+                        <div class="stats-section">
+                            <h4>Data Quality</h4>
+                            <div class="dataset-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Missing Values</span>
+                                    <span class="stat-value">${data.missing_values.toLocaleString()} (${data.missing_percentage}%)</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Duplicate Rows</span>
+                                    <span class="stat-value">${data.duplicate_rows.toLocaleString()} (${data.duplicate_percentage}%)</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Unique Rows</span>
+                                    <span class="stat-value">${data.summary_stats.unique_rows.toLocaleString()}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Columns with Missing</span>
+                                    <span class="stat-value">${data.summary_stats.columns_with_missing}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Column type breakdown
+                    const columnTypesHtml = `
+                        <div class="stats-section">
+                            <h4>Column Types</h4>
+                            <div class="dataset-stats">
+                                <div class="stat-item">
+                                    <span class="stat-label">Numeric Columns</span>
+                                    <span class="stat-value">${data.numeric_columns}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Categorical Columns</span>
+                                    <span class="stat-value">${data.categorical_columns}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Unique ID Columns</span>
+                                    <span class="stat-value">${data.summary_stats.columns_all_unique}</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-label">Avg Unique per Column</span>
+                                    <span class="stat-value">${data.summary_stats.avg_unique_per_column}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    // Detailed column statistics table
+                    let columnDetailsHtml = '';
+                    if (data.column_info) {
+                        columnDetailsHtml = `
+                            <div class="stats-section">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4>Column Details</h4>
+                                    <button id="exportColumnDetailsBtn" class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-download me-2"></i>Export as CSV
+                                    </button>
+                                </div>
+                                <div class="column-search-controls mb-3">
+                                    <div class="search-filter">
+                                        <label for="columnSearch">Search columns:</label>
+                                        <input type="text" id="columnSearch" class="form-control" 
+                                               placeholder="Search by column name..." 
+                                               oninput="filterColumnDetails()" style="width: 250px;">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary" 
+                                                onclick="clearColumnSearch()" id="clearColumnSearchBtn" style="display: none;">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                    <div class="column-filter-info" id="columnFilterInfo"></div>
+                                </div>
+                                <div class="column-details-table">
+                                    <table>
+                                        <thead id="columnDetailsTableHead"></thead>
+                                        <tbody id="columnDetailsTableBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    vizDiv.innerHTML = `
+                        <div class="card-style">
+                            <h3 class="chart-title">${viz.title}</h3>
+                            <div class="dataset-info">
+                                ${overviewHtml}
+                                ${qualityHtml}
+                                ${columnTypesHtml}
+                                ${columnDetailsHtml}
+                            </div>
+                        </div>
+                    `;
+
+                    container.appendChild(vizDiv);
+                    if (data.column_info) {
+                        document.getElementById('exportColumnDetailsBtn').addEventListener('click', exportColumnDetailsToCsv);
+                    }
+                    updateColumnDetailsView();
+                } else {
+                    container.appendChild(vizDiv);
+                }
+            });
+        }
+
+        function sortData(columnIndex) {
+            if (!window.previewData || !window.originalData || !window.filteredData) return;
+
+            const currentColumn = window.sortState.column;
+            const currentDirection = window.sortState.direction;
+
+            // Determine next sort direction
+            let nextDirection;
+            if (currentColumn === columnIndex) {
+                // Same column clicked - cycle through: none -> asc -> desc -> none
+                if (currentDirection === 'none') nextDirection = 'asc';
+                else if (currentDirection === 'asc') nextDirection = 'desc';
+                else nextDirection = 'none';
+            } else {
+                // Different column clicked - start with ascending
+                nextDirection = 'asc';
+            }
+
+            // Update sort state
+            window.sortState = { column: columnIndex, direction: nextDirection };
+
+            // Re-apply filter and then sort
+            filterData(); // This will also apply the sort through applySortToFilteredData()
+        }
+
+        function filterData() {
+            if (!window.originalData || !window.previewData) return;
+
+            const searchInput = document.getElementById('dataSearch');
+            const clearBtn = document.getElementById('clearSearchBtn');
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            window.searchTerm = searchTerm;
+
+            // Show/hide clear button
+            clearBtn.style.display = searchTerm ? 'inline-block' : 'none';
+
+            if (!searchTerm) {
+                // No search term - show all data
+                window.filteredData = [...window.originalData];
+            } else {
+                // Filter data based on search term
+                window.filteredData = window.originalData.filter(row => {
+                    return row.some(cell => {
+                        if (cell == null) return false;
+                        return String(cell).toLowerCase().includes(searchTerm);
+                    });
+                });
+            }
+
+            // Apply current sort to filtered data
+            applySortToFilteredData();
+
+            // Reset to first page after filtering
+            window.currentPage = 1;
+            updateDataPreview();
+        }
+
+        function clearSearch() {
+            document.getElementById('dataSearch').value = '';
+            document.getElementById('clearSearchBtn').style.display = 'none';
+            window.searchTerm = '';
+            window.filteredData = [...window.originalData];
+            applySortToFilteredData();
+            window.currentPage = 1;
+            updateDataPreview();
+        }
+
+        function applySortToFilteredData() {
+            if (window.sortState.direction === 'none' || window.sortState.column === null) {
+                return; // No sorting applied
+            }
+
+            const columnIndex = window.sortState.column;
+            const direction = window.sortState.direction;
+
+            window.filteredData.sort((a, b) => {
+                const aVal = a[columnIndex];
+                const bVal = b[columnIndex];
+
+                // Handle null/undefined values
+                if (aVal == null && bVal == null) return 0;
+                if (aVal == null) return direction === 'asc' ? 1 : -1;
+                if (bVal == null) return direction === 'asc' ? -1 : 1;
+
+                // Convert to strings for comparison, but try to detect numbers
+                let aComp = aVal;
+                let bComp = bVal;
+
+                // Try to parse as numbers if they look numeric
+                const aNum = parseFloat(aVal);
+                const bNum = parseFloat(bVal);
+                if (!isNaN(aNum) && !isNaN(bNum)) {
+                    aComp = aNum;
+                    bComp = bNum;
+                } else {
+                    aComp = String(aVal).toLowerCase();
+                    bComp = String(bVal).toLowerCase();
+                }
+
+                if (aComp < bComp) return direction === 'asc' ? -1 : 1;
+                if (aComp > bComp) return direction === 'asc' ? 1 : -1;
+                return 0;
+            });
+        }
+
+        function updateDataPreview() {
+            if (!window.previewData || !window.filteredData) return;
+
+            const rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+            const totalRows = window.filteredData.length;
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+            // Ensure current page is valid
+            if (window.currentPage > totalPages) {
+                window.currentPage = totalPages;
+            }
+            if (window.currentPage < 1) {
+                window.currentPage = 1;
+            }
+
+            // Calculate start and end indices
+            const startIndex = (window.currentPage - 1) * rowsPerPage;
+            const endIndex = Math.min(startIndex + rowsPerPage, totalRows);
+
+            // Update table header with sorting indicators
+            const tableHead = document.getElementById('tableHead');
+            tableHead.innerHTML = `
+                <tr>
+                    ${window.previewData.columns.map((col, index) => `
+                        <th class="sortable-header" onclick="sortData(${index})">
+                            ${col}
+                            <span class="sort-indicator ${window.sortState.column === index ? window.sortState.direction : 'none'}"></span>
+                        </th>
+                    `).join('')}
+                </tr>
+            `;
+
+            // Update table body
+            const tableBody = document.getElementById('tableBody');
+            const visibleRows = window.filteredData.slice(startIndex, endIndex);
+
+            tableBody.innerHTML = visibleRows.map(row => `
+                <tr>
+                    ${row.map(cell => `<td>${cell !== null ? cell : ''}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            // Update pagination info
+            const paginationInfo = document.getElementById('paginationInfo');
+            const originalTotal = window.originalData.length;
+            const isFiltered = window.searchTerm && totalRows !== originalTotal;
+
+            if (isFiltered) {
+                paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalRows} filtered rows (${originalTotal} total)`;
+            } else {
+                paginationInfo.textContent = `Showing ${startIndex + 1}-${endIndex} of ${totalRows} rows`;
+            }
+
+            // Update pagination controls
+            updatePaginationControls(totalPages);
+        }
+
+        function updatePaginationControls(totalPages) {
+            const container = document.getElementById('paginationContainer');
+
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="pagination-info">
+                    Page ${window.currentPage} of ${totalPages}
+                </div>
+                <div class="pagination-controls">
+                    <button class="pagination-btn" onclick="goToPage(1)" ${window.currentPage === 1 ? 'disabled' : ''}>
+                        First
+                    </button>
+                    <button class="pagination-btn" onclick="goToPage(${window.currentPage - 1})" ${window.currentPage === 1 ? 'disabled' : ''}>
+                        Previous
+                    </button>
+                    <input type="number" class="page-input" value="${window.currentPage}" 
+                           min="1" max="${totalPages}" onchange="goToPage(this.value)">
+                    <button class="pagination-btn" onclick="goToPage(${window.currentPage + 1})" ${window.currentPage === totalPages ? 'disabled' : ''}>
+                        Next
+                    </button>
+                    <button class="pagination-btn" onclick="goToPage(${totalPages})" ${window.currentPage === totalPages ? 'disabled' : ''}>
+                        Last
+                    </button>
+                </div>
+            `;
+        }
+
+        function goToPage(page) {
+            const pageNum = parseInt(page);
+            if (isNaN(pageNum) || !window.filteredData) return;
+
+            const totalRows = window.filteredData.length;
+            const rowsPerPage = parseInt(document.getElementById('rowsPerPage').value);
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+
+            if (pageNum >= 1 && pageNum <= totalPages) {
+                window.currentPage = pageNum;
+                updateDataPreview();
+            }
+        }
+
+        // Export functionality
+        function exportData(format) {
+            console.log('Export function called with format:', format);
+            console.log('Current S3 data:', window.currentS3Data);
+
+            if (!window.currentS3Data) {
+                showAlert('No S3 data available for export', 'warning');
+                return;
+            }
+
+            showLoading(true);
+            console.log('Starting export request...');
+
+            fetch(`/export-s3/${format}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(window.currentS3Data)
+            })
+                .then(response => {
+                    console.log('Export response status:', response.status);
+                    console.log('Export response headers:', response.headers);
+                    showLoading(false);
+
+                    if (response.ok) {
+                        console.log('Response OK, getting blob...');
+                        return response.blob();
+                    } else {
+                        console.error('Response not OK');
+                        return response.json().then(errorData => {
+                            console.error('Error data:', errorData);
+                            throw new Error(errorData.error || 'Export failed');
+                        });
+                    }
+                })
+                .then(blob => {
+                    console.log('Blob received, size:', blob.size);
+
+                    if (blob.size === 0) {
+                        throw new Error('Empty file received');
+                    }
+
+                    // Create download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+
+                    // Get filename from response headers or create default
+                    const timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');
+                    a.download = `export_${timestamp}.${format}`;
+
+                    console.log('Creating download with filename:', a.download);
+
+                    document.body.appendChild(a);
+                    a.click();
+
+                    // Clean up after a short delay
+                    setTimeout(() => {
+                        window.URL.revokeObjectURL(url);
+                        document.body.removeChild(a);
+                    }, 100);
+
+                    showAlert(`${format.toUpperCase()} export completed`, 'success');
+                })
+                .catch(error => {
+                    console.error('Export error:', error);
+                    showLoading(false);
+                    showAlert(`Export failed: ${error.message}`, 'danger');
+                });
+        }
+
+        // Export button event listeners
+        document.getElementById('exportCsvBtn').addEventListener('click', function () {
+            exportData('csv');
+        });
+
+        document.getElementById('exportParquetBtn').addEventListener('click', function () {
+            exportData('parquet');
+        });
+
+        // Clear button event listener
+        document.getElementById('clearDataBtn').addEventListener('click', function () {
+            if (confirm('Clear all data? This action cannot be undone.')) {
+                clearVisualizations();
+                showAlert('Data cleared', 'info');
+            }
+        });
+
+        // AWS Status Check is now integrated into the system monitor
+        // (checkAWSStatus function removed - handled in updateSystemStats)
+
+        // Function to handle tab switching (AWS status now integrated into system monitor)
+        function handleTabSwitch(activeTabId) {
+            // AWS status is now always visible in the system monitor
+            // No need to show/hide separate AWS status indicator
+        }
+
+        // Load persisted data on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set up tab switching event listeners
+            const tabButtons = document.querySelectorAll('[data-bs-toggle="tab"]');
+            tabButtons.forEach(button => {
+                button.addEventListener('shown.bs.tab', function (event) {
+                    handleTabSwitch(event.target.id);
+                });
+            });
+
+            // Handle initial tab state (AWS status now always visible in system monitor)
+            const activeTab = document.querySelector('.nav-link.active');
+            if (activeTab) {
+                handleTabSwitch(activeTab.id);
+            }
+
+            // Load S3 form data
+            const s3FormData = loadS3FormData();
+            if (s3FormData) {
+                if (s3FormData.s3_url) document.getElementById('s3Url').value = s3FormData.s3_url;
+                if (s3FormData.file_type) document.getElementById('fileType').value = s3FormData.file_type;
+                if (s3FormData.sample_size) document.getElementById('cloudSampleSize').value = s3FormData.sample_size;
+            }
+
+            // Load visualization data
+            const storedData = loadDataFromStorage();
+            if (storedData) {
+                displayVisualizations(storedData.visualizations);
+
+                // Check if we have S3 form data to enable export
+                const hasS3Data = s3FormData && s3FormData.s3_url;
+                showActionButtons(true, hasS3Data);
+
+                // Restore S3 data for export if available
+                if (hasS3Data) {
+                    window.currentS3Data = s3FormData;
+                }
+
+                showAlert('Data restored', 'info');
+            }
+
+            // Add event listeners for S3 form persistence
+            document.getElementById('s3Url').addEventListener('input', saveS3FormData);
+            document.getElementById('fileType').addEventListener('change', saveS3FormData);
+            document.getElementById('cloudSampleSize').addEventListener('change', saveS3FormData);
+        });
+
+        function filterColumnDetails() {
+            if (!window.originalColumnDetailsData) return;
+
+            const searchInput = document.getElementById('columnSearch');
+            const clearBtn = document.getElementById('clearColumnSearchBtn');
+            const filterInfo = document.getElementById('columnFilterInfo');
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            window.columnSearchTerm = searchTerm;
+
+            // Show/hide clear button
+            clearBtn.style.display = searchTerm ? 'inline-block' : 'none';
+
+            if (!searchTerm) {
+                // No search term - show all columns
+                window.filteredColumnDetailsData = [...window.originalColumnDetailsData];
+                filterInfo.textContent = '';
+            } else {
+                // Filter columns based on search term
+                window.filteredColumnDetailsData = window.originalColumnDetailsData.filter(([columnName, info]) => {
+                    return columnName.toLowerCase().includes(searchTerm);
+                });
+
+                // Update filter info
+                const totalColumns = window.originalColumnDetailsData.length;
+                const filteredColumns = window.filteredColumnDetailsData.length;
+                filterInfo.textContent = `Showing ${filteredColumns} of ${totalColumns} columns`;
+            }
+
+            // Apply current sort to filtered data
+            applySortToFilteredColumnDetails();
+            updateColumnDetailsView();
+        }
+
+        function clearColumnSearch() {
+            document.getElementById('columnSearch').value = '';
+            document.getElementById('clearColumnSearchBtn').style.display = 'none';
+            document.getElementById('columnFilterInfo').textContent = '';
+            window.columnSearchTerm = '';
+            window.filteredColumnDetailsData = [...window.originalColumnDetailsData];
+            applySortToFilteredColumnDetails();
+            updateColumnDetailsView();
+        }
+
+        function applySortToFilteredColumnDetails() {
+            if (window.columnDetailsSortState.direction === 'none' || window.columnDetailsSortState.column === null) {
+                return; // No sorting applied
+            }
+
+            const columnIndex = window.columnDetailsSortState.column;
+            const direction = window.columnDetailsSortState.direction;
+
+            window.filteredColumnDetailsData.sort((a, b) => {
+                const aInfo = a[1];
+                const bInfo = b[1];
+                let aVal, bVal;
+
+                switch (columnIndex) {
+                    case 0: // Column Name
+                        aVal = a[0];
+                        bVal = b[0];
+                        break;
+                    case 1: // Type
+                        aVal = aInfo.dtype;
+                        bVal = bInfo.dtype;
+                        break;
+                    case 2: // Missing
+                        aVal = aInfo.missing_count;
+                        bVal = bInfo.missing_count;
+                        break;
+                    case 3: // Unique
+                        aVal = aInfo.unique_count;
+                        bVal = bInfo.unique_count;
+                        break;
+                    default:
+                        return 0;
+                }
+
+                if (aVal == null && bVal == null) return 0;
+                if (aVal == null) return direction === 'asc' ? 1 : -1;
+                if (bVal == null) return direction === 'asc' ? -1 : 1;
+
+                if (typeof aVal === 'string') {
+                    return direction === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+                }
+
+                if (typeof aVal === 'number') {
+                    return direction === 'asc' ? aVal - bVal : bVal - aVal;
+                }
+
+                return 0;
+            });
+        }
+
+        function updateColumnDetailsView() {
+            if (!window.filteredColumnDetailsData) return;
+
+            const tableHead = document.getElementById('columnDetailsTableHead');
+            const tableBody = document.getElementById('columnDetailsTableBody');
+
+            if (!tableHead || !tableBody) return;
+
+            const columns = ['Column', 'Type', 'Missing', 'Unique', 'Statistics'];
+
+            // Update table header
+            tableHead.innerHTML = `
+                <tr>
+                    ${columns.map((col, index) => {
+                const isSortable = index < 4;
+                const sortableClass = isSortable ? 'sortable-header' : '';
+                const clickHandler = isSortable ? `onclick="sortColumnDetails(${index})"` : '';
+                const sortIndicator = isSortable ?
+                    `<span class="sort-indicator ${window.columnDetailsSortState.column === index ? window.columnDetailsSortState.direction : 'none'}"></span>` :
+                    '';
+
+                return `
+                        <th class="${sortableClass}" ${clickHandler}>
+                            ${col}
+                            ${sortIndicator}
+                        </th>
+                    `
+            }).join('')}
+                </tr>
+            `;
+
+            // Update table body
+            tableBody.innerHTML = window.filteredColumnDetailsData.map(([col, info]) => {
+                let statsHtml = '';
+
+                // Numeric column statistics
+                if (info.min !== undefined) {
+                    statsHtml = `
+                                <div class="numeric-stats">
+                                    <div><strong>Range:</strong> ${info.min?.toFixed(2)} - ${info.max?.toFixed(2)}</div>
+                                    <div><strong>Mean:</strong> ${info.mean?.toFixed(2)}</div>
+                                    <div><strong>Median:</strong> ${info.median?.toFixed(2)}</div>
+                                    <div><strong>Std:</strong> ${info.std?.toFixed(2)}</div>
+                                    ${info.skewness !== undefined ? `<div><strong>Skewness:</strong> ${info.skewness?.toFixed(2)}</div>` : ''}
+                                    ${info.zeros_count > 0 ? `<div><strong>Zeros:</strong> ${info.zeros_count.toLocaleString()}</div>` : ''}
+                                    ${info.negative_count > 0 ? `<div><strong>Negatives:</strong> ${info.negative_count.toLocaleString()}</div>` : ''}
+                                </div>
+                            `;
+                }
+                // Categorical column statistics
+                else if (info.top_values) {
+                    const topValues = info.top_values.slice(0, 3);
+                    statsHtml = `
+                                <div class="categorical-stats">
+                                    <div><strong>Mode:</strong> ${info.mode || 'N/A'}</div>
+                                    <div><strong>Avg Length:</strong> ${info.avg_length?.toFixed(1)}</div>
+                                    <div><strong>Top Values:</strong></div>
+                                    ${topValues.map(tv => `<div class="top-value">${tv.value} (${tv.count})</div>`).join('')}
+                                </div>
+                            `;
+                }
+
+                return `
+                            <tr>
+                                <td><strong>${col}</strong></td>
+                                <td><span class="badge data-type-badge">${info.dtype}</span></td>
+                                <td>${info.missing_count.toLocaleString()} (${info.missing_percentage}%)</td>
+                                <td>${info.unique_count.toLocaleString()} (${info.unique_percentage}%)</td>
+                                <td class="stats-cell">${statsHtml}</td>
+                            </tr>
+                        `;
+            }).join('');
+        }
+
+        function sortColumnDetails(columnIndex) {
+            if (!window.filteredColumnDetailsData || !window.originalColumnDetailsData) return;
+
+            // Disable sorting for the 'Statistics' column (index 4)
+            if (columnIndex === 4) return;
+
+            const currentColumn = window.columnDetailsSortState.column;
+            const currentDirection = window.columnDetailsSortState.direction;
+
+            let nextDirection;
+            if (currentColumn === columnIndex) {
+                if (currentDirection === 'none') nextDirection = 'asc';
+                else if (currentDirection === 'asc') nextDirection = 'desc';
+                else nextDirection = 'none';
+            } else {
+                nextDirection = 'asc';
+            }
+
+            window.columnDetailsSortState = {
+                column: columnIndex,
+                direction: nextDirection
+            };
+
+            // Re-apply filter and then sort
+            filterColumnDetails(); // This will also apply the sort through applySortToFilteredColumnDetails()
+        }
+
+        function exportColumnDetailsToCsv() {
+            if (!window.filteredColumnDetailsData || window.filteredColumnDetailsData.length === 0) {
+                showAlert('No column details data available to export.', 'warning');
+                return;
+            }
+
+            const headers = ['Column', 'Type', 'Missing Count', 'Missing Percentage', 'Unique Count', 'Unique Percentage', 'Statistics'];
+
+            const escapeCsvCell = (cell) => {
+                const strCell = String(cell);
+                if (strCell.includes(',') || strCell.includes('"') || strCell.includes('\n')) {
+                    return `"${strCell.replace(/"/g, '""')}"`;
+                }
+                return strCell;
+            };
+
+            const rows = window.filteredColumnDetailsData.map(([col, info]) => {
+                let statsParts = [];
+                if (info.min !== undefined) { // Numeric
+                    statsParts.push(`Range: ${info.min?.toFixed(2)} - ${info.max?.toFixed(2)}`);
+                    statsParts.push(`Mean: ${info.mean?.toFixed(2)}`);
+                    statsParts.push(`Median: ${info.median?.toFixed(2)}`);
+                    statsParts.push(`Std: ${info.std?.toFixed(2)}`);
+                    if (info.skewness !== undefined) statsParts.push(`Skewness: ${info.skewness?.toFixed(2)}`);
+                    if (info.zeros_count > 0) statsParts.push(`Zeros: ${info.zeros_count.toLocaleString()}`);
+                    if (info.negative_count > 0) statsParts.push(`Negatives: ${info.negative_count.toLocaleString()}`);
+                } else if (info.top_values) { // Categorical
+                    statsParts.push(`Mode: ${info.mode || 'N/A'}`);
+                    statsParts.push(`Avg Length: ${info.avg_length?.toFixed(1)}`);
+                    const topValues = info.top_values.slice(0, 3).map(tv => `${tv.value} (${tv.count})`).join('; ');
+                    statsParts.push(`Top Values: [${topValues}]`);
+                }
+                const statsString = statsParts.join(' | ');
+
+                return [
+                    col,
+                    info.dtype,
+                    info.missing_count,
+                    info.missing_percentage,
+                    info.unique_count,
+                    info.unique_percentage,
+                    statsString
+                ].map(escapeCsvCell);
+            });
+
+            let csvContent = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+
+            const blob = new Blob([csvContent], {
+                type: 'text/csv;charset=utf-8;'
+            });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+
+            // Add filtered indicator to filename if search is active
+            const filename = window.columnSearchTerm ?
+                `column_details_filtered_${window.columnSearchTerm.replace(/[^a-zA-Z0-9]/g, '_')}.csv` :
+                "column_details.csv";
+            link.setAttribute("download", filename);
+
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // System Monitoring Functions
+        let systemMonitorInterval = null;
+
+        function startSystemMonitoring() {
+            // Clear any existing interval
+            if (systemMonitorInterval) {
+                clearInterval(systemMonitorInterval);
+            }
+
+            // Start monitoring immediately
+            updateSystemStats();
+
+            // Then update every second
+            systemMonitorInterval = setInterval(updateSystemStats, 1000);
+        }
+
+        function stopSystemMonitoring() {
+            if (systemMonitorInterval) {
+                clearInterval(systemMonitorInterval);
+                systemMonitorInterval = null;
+            }
+        }
+
+        async function updateSystemStats() {
+            try {
+                // Fetch system stats and AWS status in parallel
+                const [systemResponse, awsResponse] = await Promise.all([
+                    fetch('/system-stats'),
+                    fetch('/aws-status')
+                ]);
+
+                // Handle system stats
+                if (systemResponse.ok) {
+                    const systemData = await systemResponse.json();
+
+                    // Update RAM information
+                    const ramUsage = document.getElementById('ramUsage');
+                    const availableRam = document.getElementById('availableRam');
+                    const totalRam = document.getElementById('totalRam');
+                    const ramProgressBar = document.getElementById('ramProgressBar');
+
+                    if (ramUsage && systemData.memory) {
+                        ramUsage.textContent = `${systemData.memory.percent_used}%`;
+                    }
+
+                    if (availableRam && systemData.memory) {
+                        availableRam.textContent = `${systemData.memory.available_gb} GB`;
+                    }
+
+                    if (totalRam && systemData.memory) {
+                        totalRam.textContent = `${systemData.memory.total_gb} GB`;
+                    }
+
+                    if (ramProgressBar && systemData.memory) {
+                        ramProgressBar.style.width = `${systemData.memory.percent_used}%`;
+                    }
+
+                    // Update CPU information
+                    const cpuUsage = document.getElementById('cpuUsage');
+                    const totalCpuCores = document.getElementById('totalCpuCores');
+                    const cpuProgressBar = document.getElementById('cpuProgressBar');
+
+                    if (cpuUsage && systemData.cpu) {
+                        cpuUsage.textContent = `${systemData.cpu.percent_used}%`;
+                    }
+
+                    if (totalCpuCores && systemData.cpu) {
+                        totalCpuCores.textContent = `${systemData.cpu.core_count}`;
+                    }
+
+                    if (cpuProgressBar && systemData.cpu) {
+                        cpuProgressBar.style.width = `${systemData.cpu.percent_used}%`;
+                    }
+                } else {
+                    throw new Error(`System stats HTTP ${systemResponse.status}`);
+                }
+
+                // Handle AWS status
+                const awsConnectionStatus = document.getElementById('awsConnectionStatus');
+                if (awsResponse.ok && awsConnectionStatus) {
+                    const awsData = await awsResponse.json();
+                    if (awsData.aws) {
+                        if (awsData.aws.connected) {
+                            if (awsData.aws.status.includes('limited')) {
+                                awsConnectionStatus.textContent = 'Limited';
+                                awsConnectionStatus.style.color = 'var(--warning-color)';
+                            } else {
+                                awsConnectionStatus.textContent = 'Connected';
+                                awsConnectionStatus.style.color = 'var(--success-color)';
+                            }
+                        } else {
+                            awsConnectionStatus.textContent = 'Disconnected';
+                            awsConnectionStatus.style.color = 'var(--danger-color)';
+                        }
+                    }
+                } else if (awsConnectionStatus) {
+                    awsConnectionStatus.textContent = 'Unknown';
+                    awsConnectionStatus.style.color = 'var(--text-secondary)';
+                }
+
+            } catch (error) {
+                console.error('Failed to fetch system stats:', error);
+
+                // Update UI to show error state
+                const ramUsage = document.getElementById('ramUsage');
+                const cpuUsage = document.getElementById('cpuUsage');
+                const availableRam = document.getElementById('availableRam');
+                const totalRam = document.getElementById('totalRam');
+                const totalCpuCores = document.getElementById('totalCpuCores');
+                const awsConnectionStatus = document.getElementById('awsConnectionStatus');
+
+                if (ramUsage) ramUsage.textContent = 'Error';
+                if (cpuUsage) cpuUsage.textContent = 'Error';
+                if (availableRam) availableRam.textContent = 'Error';
+                if (totalRam) totalRam.textContent = 'Error';
+                if (totalCpuCores) totalCpuCores.textContent = 'Error';
+                if (awsConnectionStatus) {
+                    awsConnectionStatus.textContent = 'Error';
+                    awsConnectionStatus.style.color = 'var(--danger-color)';
+                }
+            }
+        }
+
+        // Start system monitoring when page loads
+        document.addEventListener('DOMContentLoaded', function () {
+            startSystemMonitoring();
+        });
+
+        // Stop monitoring when page is about to unload (cleanup)
+        window.addEventListener('beforeunload', function () {
+            stopSystemMonitoring();
+        });
+
+        // Handle page visibility changes (pause when tab is not active)
+        document.addEventListener('visibilitychange', function () {
+            if (document.hidden) {
+                stopSystemMonitoring();
+            } else {
+                startSystemMonitoring();
+            }
+        });
+    </script>
+</body>
+
+</html>
