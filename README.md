@@ -15,6 +15,27 @@ A simple data visualization tool for CSV and Parquet files with S3 support.
 
 ## Installation
 
+### Quick Start (Recommended)
+
+**Unix/Linux/macOS:**
+```bash
+./start_app.sh
+```
+
+**Windows:**
+```batch
+start_app.bat
+```
+
+These scripts will automatically:
+- Check Python installation
+- Create virtual environment
+- Install dependencies
+- Start the application
+- Open browser
+
+### Manual Installation
+
 1. **Install dependencies**
    ```bash
    pip install -r requirements.txt
@@ -77,6 +98,8 @@ Drag and drop CSV or Parquet files, or click "Choose File" to browse.
 data-visualizer/
 ├── app.py              # Main application
 ├── run.py              # Startup script
+├── start_app.sh        # Unix/Linux/macOS startup script
+├── start_app.bat       # Windows startup script
 ├── requirements.txt    # Dependencies
 ├── templates/
 │   └── index.html     # Web interface
