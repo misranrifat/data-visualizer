@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  data-visualizer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: data-visualizer-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN:-}
+    volumes:
+      - ./uploads:/app/uploads
+      - ~/.aws:/home/appuser/.aws:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - data-visualizer-network
+
+networks:
+  data-visualizer-network:
+    driver: bridge
+
+volumes:
+  uploads:
+    driver: local
